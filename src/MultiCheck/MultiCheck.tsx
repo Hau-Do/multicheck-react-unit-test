@@ -36,7 +36,7 @@ type Props = {
 }
 
 export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onChange }) => {
-  const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set(values));
+  const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set(values || []));
   const allOptions = [{ label: 'Select All', value: 'select-all' }, ...options];
 
   useEffect(() => {
@@ -56,6 +56,15 @@ export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onC
     });
   }, [options, onChange]);
 
+  const handleSelectAllChange = useCallback(() => {
+    setSelectedValues((prevValues) => {
+      const allSelected = options.every(option => prevValues.has(option.value));
+      const newValues: Set<string> = allSelected ? new Set() : new Set(options.map(option => option.value));
+      onChange?.(options.filter(option => newValues.has(option.value)));
+      return newValues;
+    });
+  }, [options, onChange]);
+
   const isAllSelected = useMemo(() => 
     options.length > 0 && options.every(option => selectedValues.has(option.value)),
     [options, selectedValues]
@@ -70,7 +79,7 @@ export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onC
             <input
               type="checkbox"
               checked={option.value === 'select-all' ? isAllSelected : selectedValues.has(option.value)}
-              onChange={() => option.value === 'select-all' ? () => {} : handleOptionChange(option.value)}
+              onChange={() => option.value === 'select-all' ? handleSelectAllChange() : handleOptionChange(option.value)}
             />
             {option.label}
           </label>
