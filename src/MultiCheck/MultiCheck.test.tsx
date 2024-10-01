@@ -23,4 +23,22 @@ describe('MultiCheck', () => {
       expect(screen.getByLabelText(option.label)).toBeInTheDocument();
     });
   });
+
+  it('checks all options when Select All is clicked', () => {
+    render(<MultiCheck options={testOptions} />);
+    fireEvent.click(screen.getByLabelText('Select All'));
+    testOptions.forEach(option => {
+      expect(screen.getByLabelText(option.label)).toBeChecked();
+    });
+  });
+
+  it('unchecks all options when Select All is clicked twice', () => {
+    render(<MultiCheck options={testOptions} />);
+    const selectAll = screen.getByLabelText('Select All');
+    fireEvent.click(selectAll);
+    fireEvent.click(selectAll);
+    testOptions.forEach(option => {
+      expect(screen.getByLabelText(option.label)).not.toBeChecked();
+    });
+  });
 });
