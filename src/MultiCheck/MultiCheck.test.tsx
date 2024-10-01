@@ -76,4 +76,21 @@ describe('MultiCheck', () => {
     expect(screen.getByLabelText(testOptions[0].label)).not.toBeChecked();
     expect(screen.getByLabelText(testOptions[1].label)).toBeChecked();
   });
+
+  it('renders in multiple columns when specified', () => {
+    const options: Option[] = [
+      { label: 'Option 1', value: '1' },
+      { label: 'Option 2', value: '2' },
+      { label: 'Option 3', value: '3' },
+      { label: 'Option 4', value: '4' },
+    ];
+    
+    render(<MultiCheck options={options} columns={2} />);
+    
+    const columns = screen.getAllByTestId('MultiCheck-column');
+    expect(columns).toHaveLength(2);
+    
+    expect(columns[0].querySelectorAll('input[type="checkbox"]')).toHaveLength(3);
+    expect(columns[1].querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
+  });
 });
