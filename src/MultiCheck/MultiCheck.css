@@ -14,3 +14,18 @@
     display: grid;
     gap: 10px;
 }
+
+.MultiCheck-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.MultiCheck-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.MultiCheck-option input[type="checkbox"] {
+    margin-right: 5px;
+}
