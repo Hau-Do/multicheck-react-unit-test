@@ -15,4 +15,12 @@ describe('MultiCheck', () => {
     render(<MultiCheck label="Test Label" options={testOptions} />);
     expect(screen.getByText('Test Label')).toBeInTheDocument();
   });
+
+  it('renders all options including Select All', () => {
+    render(<MultiCheck options={testOptions} />);
+    expect(screen.getByLabelText('Select All')).toBeInTheDocument();
+    testOptions.forEach(option => {
+      expect(screen.getByLabelText(option.label)).toBeInTheDocument();
+    });
+  });
 });
