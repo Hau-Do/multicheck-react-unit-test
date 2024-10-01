@@ -129,5 +129,11 @@ describe('MultiCheck', () => {
     });
   });
 
+  it('works in uncontrolled mode when values prop is undefined', () => {
+    render(<MultiCheck options={testOptions} />);
+    fireEvent.click(screen.getByLabelText(testOptions[0].label));
+    expect(screen.getByLabelText(testOptions[0].label)).toBeChecked();
+  });
+
 
 });
