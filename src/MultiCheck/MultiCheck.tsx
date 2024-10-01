@@ -1,6 +1,6 @@
 import './MultiCheck.css';
 
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import {FC} from 'react';
 
 export type Option = {
@@ -35,8 +35,31 @@ type Props = {
   onChange?: (options: Option[]) => void,
 }
 
-export const MultiCheck: FC<Props> = (props) => {
-  return <div className='MultiCheck'>
-    TODO
-  </div>
+export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onChange }) => {
+  const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set(values));
+
+  const allOptions = [{ label: 'Select All', value: 'select-all' }, ...options];
+
+  const isAllSelected = useMemo(() => 
+    options.length > 0 && options.every(option => selectedValues.has(option.value)),
+    [options, selectedValues]
+  );
+  
+  return (
+    <div className='MultiCheck'>
+      {label && <div className="MultiCheck-label">{label}</div>}
+      <div className="MultiCheck-columns" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+        {allOptions.map((option) => (
+          <label key={option.value} className="MultiCheck-option">
+            <input
+              type="checkbox"
+              checked={true}
+              onChange={() => {}}
+            />
+            {option.label}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
 }

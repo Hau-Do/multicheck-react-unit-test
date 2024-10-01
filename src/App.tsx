@@ -8,7 +8,7 @@ const App: FC = () : JSX.Element=> {
     <Controller 
       render={(options, values, columns, onChange) => (
         <MultiCheck 
-          label='MultiCheck' 
+          label='Status' 
           options={options}
           onChange={onChange}
           values={values}
