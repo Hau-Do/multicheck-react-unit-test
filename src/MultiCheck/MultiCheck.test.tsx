@@ -93,4 +93,32 @@ describe('MultiCheck', () => {
     expect(columns[0].querySelectorAll('input[type="checkbox"]')).toHaveLength(3);
     expect(columns[1].querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
   });
+
+  it('distributes options evenly across columns', () => {
+    const options: Option[] = [
+      { label: 'Option 1', value: '1' },
+      { label: 'Option 2', value: '2' },
+      { label: 'Option 3', value: '3' },
+      { label: 'Option 4', value: '4' },
+      { label: 'Option 5', value: '5' },
+    ];
+    
+    render(<MultiCheck options={options} columns={3} />);
+    
+    const columns = screen.getAllByTestId('MultiCheck-column');
+    expect(columns).toHaveLength(3);
+    
+    // Check distribution of options
+    expect(columns[0].querySelectorAll('input[type="checkbox"]')).toHaveLength(2); // Select All + 1 option
+    expect(columns[1].querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
+    expect(columns[2].querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
+    
+    // Check the order of options
+    expect(columns[0].textContent).toContain('Select All');
+    expect(columns[0].textContent).toContain('Option 1');
+    expect(columns[1].textContent).toContain('Option 2');
+    expect(columns[1].textContent).toContain('Option 3');
+    expect(columns[2].textContent).toContain('Option 4');
+    expect(columns[2].textContent).toContain('Option 5');
+  });
 });
