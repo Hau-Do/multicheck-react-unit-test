@@ -56,4 +56,11 @@ describe('MultiCheck', () => {
     fireEvent.click(screen.getByLabelText(testOptions[0].label));
     expect(screen.getByLabelText('Select All')).not.toBeChecked();
   });
+
+  it('calls onChange with correct values when options are selected', () => {
+    const onChange = jest.fn();
+    render(<MultiCheck options={testOptions} onChange={onChange} />);
+    fireEvent.click(screen.getByLabelText(testOptions[0].label));
+    expect(onChange).toHaveBeenCalledWith([testOptions[0]]);
+  });  
 });
