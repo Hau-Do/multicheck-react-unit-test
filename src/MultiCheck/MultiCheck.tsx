@@ -1,6 +1,6 @@
 import './MultiCheck.css';
 
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {FC} from 'react';
 
 export type Option = {
@@ -37,8 +37,24 @@ type Props = {
 
 export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onChange }) => {
   const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set(values));
-
   const allOptions = [{ label: 'Select All', value: 'select-all' }, ...options];
+
+  useEffect(() => {
+    setSelectedValues(new Set(values));
+  }, [values]);
+
+  const handleOptionChange = useCallback((value: string) => {
+    setSelectedValues((prevValues) => {
+      const newValues = new Set(prevValues);
+      if (newValues.has(value)) {
+        newValues.delete(value);
+      } else {
+        newValues.add(value);
+      }
+      onChange?.(options.filter(option => newValues.has(option.value)));
+      return newValues;
+    });
+  }, [options, onChange]);
 
   const isAllSelected = useMemo(() => 
     options.length > 0 && options.every(option => selectedValues.has(option.value)),
@@ -53,8 +69,8 @@ export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onC
           <label key={option.value} className="MultiCheck-option">
             <input
               type="checkbox"
-              checked={true}
-              onChange={() => {}}
+              checked={option.value === 'select-all' ? isAllSelected : selectedValues.has(option.value)}
+              onChange={() => option.value === 'select-all' ? () => {} : handleOptionChange(option.value)}
             />
             {option.label}
           </label>
