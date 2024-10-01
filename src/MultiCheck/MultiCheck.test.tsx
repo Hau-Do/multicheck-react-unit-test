@@ -121,4 +121,13 @@ describe('MultiCheck', () => {
     expect(columns[2].textContent).toContain('Option 4');
     expect(columns[2].textContent).toContain('Option 5');
   });
+
+  it('handles values not in options', () => {
+    render(<MultiCheck options={testOptions} values={['non-existent']} />);
+    testOptions.forEach(option => {
+      expect(screen.getByLabelText(option.label)).not.toBeChecked();
+    });
+  });
+
+
 });
