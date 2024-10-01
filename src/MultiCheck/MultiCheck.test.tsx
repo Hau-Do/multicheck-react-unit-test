@@ -41,4 +41,19 @@ describe('MultiCheck', () => {
       expect(screen.getByLabelText(option.label)).not.toBeChecked();
     });
   });
+
+  it('updates Select All when all options are manually checked', () => {
+    render(<MultiCheck options={testOptions} />);
+    testOptions.forEach(option => {
+      fireEvent.click(screen.getByLabelText(option.label));
+    });
+    expect(screen.getByLabelText('Select All')).toBeChecked();
+  });
+
+  it('updates Select All when any option is unchecked', () => {
+    render(<MultiCheck options={testOptions} />);
+    fireEvent.click(screen.getByLabelText('Select All'));
+    fireEvent.click(screen.getByLabelText(testOptions[0].label));
+    expect(screen.getByLabelText('Select All')).not.toBeChecked();
+  });
 });
