@@ -91,7 +91,7 @@ export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onC
       {label && <div className="MultiCheck-label">{label}</div>}
       <div className="MultiCheck-columns" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
         {columnLayout.map((column, columnIndex) => (
-          <div key={columnIndex} className="MultiCheck-column">
+          <div key={columnIndex} className="MultiCheck-column" data-testid="MultiCheck-column">
             {column.map((option) => (
               <label key={option.value} className="MultiCheck-option">
                 <input
