@@ -63,4 +63,17 @@ describe('MultiCheck', () => {
     fireEvent.click(screen.getByLabelText(testOptions[0].label));
     expect(onChange).toHaveBeenCalledWith([testOptions[0]]);
   });  
+
+  it('respects initial values prop', () => {
+    render(<MultiCheck options={testOptions} values={[testOptions[0].value]} />);
+    expect(screen.getByLabelText(testOptions[0].label)).toBeChecked();
+    expect(screen.getByLabelText(testOptions[1].label)).not.toBeChecked();
+  });
+
+  it('updates when values prop changes', () => {
+    const { rerender } = render(<MultiCheck options={testOptions} values={[testOptions[0].value]} />);
+    rerender(<MultiCheck options={testOptions} values={[testOptions[1].value]} />);
+    expect(screen.getByLabelText(testOptions[0].label)).not.toBeChecked();
+    expect(screen.getByLabelText(testOptions[1].label)).toBeChecked();
+  });
 });
