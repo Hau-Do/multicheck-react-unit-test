@@ -10,7 +10,7 @@ const testOptions: Option[] = [
   { label: 'Option 5', value: '5' },
 ];
 
-describe('MultiCheck', () => {
+describe('MultiCheck component', () => {
   it('renders the label if label provided', () => {
     render(<MultiCheck label="Test Label" options={testOptions} />);
     expect(screen.getByText('Test Label')).toBeInTheDocument();
@@ -139,5 +139,52 @@ describe('MultiCheck', () => {
     render(<MultiCheck options={testOptions} />);
     fireEvent.click(screen.getByLabelText(testOptions[0].label));
     expect(screen.getByLabelText(testOptions[0].label)).toBeChecked();
+  });
+});
+
+
+describe('MultiCheck column layout', () => {
+  const createOptions = (count: number): Option[] => 
+    Array.from({ length: count }, (_, i) => ({ label: `Option ${i + 1}`, value: `${i + 1}` }));
+
+  const testColumnLayout = (optionCount: number, columnCount: number) => {
+    const options = createOptions(optionCount);
+    render(<MultiCheck options={options} columns={columnCount} />);
+    
+    const columns = screen.getAllByTestId('MultiCheck-column');
+    expect(columns).toHaveLength(columnCount);
+
+    const totalItems = optionCount + 1; // +1 for "Select All"
+    const baseItemsPerColumn = Math.floor(totalItems / columnCount);
+    const extraItems = totalItems % columnCount;
+
+    columns.forEach((column, index) => {
+      const expectedItemCount = baseItemsPerColumn + (index < extraItems ? 1 : 0);
+      const checkboxes = column.querySelectorAll('input[type="checkbox"]');
+      expect(checkboxes).toHaveLength(expectedItemCount);
+    });
+
+    // Check "Select All" is in the first column
+    expect(columns[0].textContent).toContain('Select All');
+  };
+
+  it('distributes options correctly with 5 options and 3 columns', () => {
+    testColumnLayout(5, 3);
+  });
+
+  it('distributes options correctly with 10 options and 4 columns', () => {
+    testColumnLayout(10, 4);
+  });
+
+  it('handles case with more columns than options', () => {
+    testColumnLayout(3, 5);
+  });
+
+  it('handles single column case', () => {
+    testColumnLayout(5, 1);
+  });
+
+  it('distributes options evenly when perfectly divisible', () => {
+    testColumnLayout(8, 3); // 9 total items (8 + Select All) divide evenly into 3 columns
   });
 });
