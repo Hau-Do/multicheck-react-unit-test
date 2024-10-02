@@ -3,7 +3,7 @@ import './MultiCheck.css';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {FC} from 'react';
 import { Option } from '../types';
-import useCalculatedLayout from '../hooks/useCalculatedLayout';
+import { useCalculatedLayout } from '../hooks';
 
 /**
  * Notice:

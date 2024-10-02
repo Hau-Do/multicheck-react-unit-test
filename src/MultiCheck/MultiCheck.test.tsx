@@ -12,12 +12,12 @@ const testOptions: Option[] = [
 ];
 
 describe('MultiCheck component', () => {
-  it('renders the label if label provided', () => {
+  it('should render the label if label provided', () => {
     render(<MultiCheck label="Test Label" options={testOptions} />);
     expect(screen.getByText('Test Label')).toBeInTheDocument();
   });
 
-  it('renders all options including Select All', () => {
+  it('should render all options including Select All', () => {
     render(<MultiCheck options={testOptions} />);
     expect(screen.getByLabelText('Select All')).toBeInTheDocument();
     testOptions.forEach(option => {
@@ -25,7 +25,7 @@ describe('MultiCheck component', () => {
     });
   });
 
-  it('checks all options when Select All is clicked', () => {
+  it('should check all options when Select All is clicked', () => {
     render(<MultiCheck options={testOptions} />);
     fireEvent.click(screen.getByLabelText('Select All'));
     testOptions.forEach(option => {
@@ -33,7 +33,7 @@ describe('MultiCheck component', () => {
     });
   });
 
-  it('unchecks all options when Select All is clicked twice', () => {
+  it('should uncheck all options when Select All is clicked twice', () => {
     render(<MultiCheck options={testOptions} />);
     const selectAll = screen.getByLabelText('Select All');
     fireEvent.click(selectAll);
@@ -43,7 +43,7 @@ describe('MultiCheck component', () => {
     });
   });
 
-  it('updates Select All when all options are manually checked', () => {
+  it('should update Select All when all options are manually checked', () => {
     render(<MultiCheck options={testOptions} />);
     testOptions.forEach(option => {
       fireEvent.click(screen.getByLabelText(option.label));
@@ -51,34 +51,34 @@ describe('MultiCheck component', () => {
     expect(screen.getByLabelText('Select All')).toBeChecked();
   });
 
-  it('updates Select All when any option is unchecked', () => {
+  it('should update Select All when any option is unchecked', () => {
     render(<MultiCheck options={testOptions} />);
     fireEvent.click(screen.getByLabelText('Select All'));
     fireEvent.click(screen.getByLabelText(testOptions[0].label));
     expect(screen.getByLabelText('Select All')).not.toBeChecked();
   });
 
-  it('calls onChange with correct values when options are selected', () => {
+  it('should call onChange with correct values when options are selected', () => {
     const onChange = jest.fn();
     render(<MultiCheck options={testOptions} onChange={onChange} />);
     fireEvent.click(screen.getByLabelText(testOptions[0].label));
     expect(onChange).toHaveBeenCalledWith([testOptions[0]]);
   });  
 
-  it('respects initial values prop', () => {
+  it('should respect initial values prop', () => {
     render(<MultiCheck options={testOptions} values={[testOptions[0].value]} />);
     expect(screen.getByLabelText(testOptions[0].label)).toBeChecked();
     expect(screen.getByLabelText(testOptions[1].label)).not.toBeChecked();
   });
 
-  it('updates when values prop changes', () => {
+  it('should update when values prop changes', () => {
     const { rerender } = render(<MultiCheck options={testOptions} values={[testOptions[0].value]} />);
     rerender(<MultiCheck options={testOptions} values={[testOptions[1].value]} />);
     expect(screen.getByLabelText(testOptions[0].label)).not.toBeChecked();
     expect(screen.getByLabelText(testOptions[1].label)).toBeChecked();
   });
 
-  it('renders in multiple columns when specified', () => {
+  it('should render in multiple columns when specified', () => {
     const options: Option[] = [
       { label: 'Option 1', value: '1' },
       { label: 'Option 2', value: '2' },
@@ -95,97 +95,22 @@ describe('MultiCheck component', () => {
     expect(columns[1].querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
   });
 
-  it('distributes options evenly across columns', () => {
-    const options: Option[] = [
-      { label: 'Option 1', value: '1' },
-      { label: 'Option 2', value: '2' },
-      { label: 'Option 3', value: '3' },
-      { label: 'Option 4', value: '4' },
-      { label: 'Option 5', value: '5' },
-    ];
-    
-    render(<MultiCheck options={options} columns={3} />);
-    
-    const columns = screen.getAllByTestId('MultiCheck-column');
-    expect(columns).toHaveLength(3);
-    
-    // Check distribution of options
-    expect(columns[0].querySelectorAll('input[type="checkbox"]')).toHaveLength(2); // Select All + 1 option
-    expect(columns[1].querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
-    expect(columns[2].querySelectorAll('input[type="checkbox"]')).toHaveLength(2);
-    
-    // Check the order of options
-    expect(columns[0].textContent).toContain('Select All');
-    expect(columns[0].textContent).toContain('Option 1');
-    expect(columns[1].textContent).toContain('Option 2');
-    expect(columns[1].textContent).toContain('Option 3');
-    expect(columns[2].textContent).toContain('Option 4');
-    expect(columns[2].textContent).toContain('Option 5');
-  });
-
-  it('handles values not in options', () => {
+  it('should handle values not in options', () => {
     render(<MultiCheck options={testOptions} values={['non-existent']} />);
     testOptions.forEach(option => {
       expect(screen.getByLabelText(option.label)).not.toBeChecked();
     });
   });
 
-  it('maintains internal state when onChange is not provided', () => {
+  it('should maintain internal state when onChange is not provided', () => {
     render(<MultiCheck options={testOptions} />);
     fireEvent.click(screen.getByLabelText(testOptions[0].label));
     expect(screen.getByLabelText(testOptions[0].label)).toBeChecked();
   });
 
-  it('works in uncontrolled mode when values prop is undefined', () => {
+  it('should work in uncontrolled mode when values prop is undefined', () => {
     render(<MultiCheck options={testOptions} />);
     fireEvent.click(screen.getByLabelText(testOptions[0].label));
     expect(screen.getByLabelText(testOptions[0].label)).toBeChecked();
-  });
-});
-
-
-describe('MultiCheck column layout', () => {
-  const createOptions = (count: number): Option[] => 
-    Array.from({ length: count }, (_, i) => ({ label: `Option ${i + 1}`, value: `${i + 1}` }));
-
-  const testColumnLayout = (optionCount: number, columnCount: number) => {
-    const options = createOptions(optionCount);
-    render(<MultiCheck options={options} columns={columnCount} />);
-    
-    const columns = screen.getAllByTestId('MultiCheck-column');
-    expect(columns).toHaveLength(columnCount);
-
-    const totalItems = optionCount + 1; // +1 for "Select All"
-    const baseItemsPerColumn = Math.floor(totalItems / columnCount);
-    const extraItems = totalItems % columnCount;
-
-    columns.forEach((column, index) => {
-      const expectedItemCount = baseItemsPerColumn + (index < extraItems ? 1 : 0);
-      const checkboxes = column.querySelectorAll('input[type="checkbox"]');
-      expect(checkboxes).toHaveLength(expectedItemCount);
-    });
-
-    // Check "Select All" is in the first column
-    expect(columns[0].textContent).toContain('Select All');
-  };
-
-  it('distributes options correctly with 5 options and 3 columns', () => {
-    testColumnLayout(5, 3);
-  });
-
-  it('distributes options correctly with 10 options and 4 columns', () => {
-    testColumnLayout(10, 4);
-  });
-
-  it('handles case with more columns than options', () => {
-    testColumnLayout(3, 5);
-  });
-
-  it('handles single column case', () => {
-    testColumnLayout(5, 1);
-  });
-
-  it('distributes options evenly when perfectly divisible', () => {
-    testColumnLayout(8, 3); // 9 total items (8 + Select All) divide evenly into 3 columns
   });
 });

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Option } from "../types";
+import { Option } from "../../types";
 
 const useCalculatedLayout = (options: Option[], columns: number) => {
 
