@@ -3,6 +3,7 @@ import './MultiCheck.css';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {FC} from 'react';
 import { Option } from '../types';
+import useCalculatedLayout from '../hooks/useCalculatedLayout';
 
 /**
  * Notice:
@@ -33,6 +34,7 @@ type Props = {
 
 export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onChange }) => {
   const [selectedValues, setSelectedValues] = useState<Set<string>>(new Set(values || []));
+  const { columnLayout } = useCalculatedLayout(options, columns);
 
   useEffect(() => {
     setSelectedValues(new Set(values));
@@ -64,23 +66,6 @@ export const MultiCheck: FC<Props> = ({ label, options, columns = 1, values, onC
     options.length > 0 && options.every(option => selectedValues.has(option.value)),
     [options, selectedValues]
   );
-
-  const columnLayout = useMemo(() => {
-    const allOptions = [{ label: 'Select All', value: 'select-all' }, ...options];
-    const totalItems = allOptions.length;
-    const baseItemsPerColumn = Math.floor(totalItems / columns);
-    const extraItems = totalItems % columns;
-
-    const layout: Option[][] = Array.from({ length: columns }, (_, index) => {
-      const columnItems = baseItemsPerColumn + (index < extraItems ? 1 : 0);
-      return allOptions.slice(
-        index * baseItemsPerColumn + Math.min(index, extraItems),
-        index * baseItemsPerColumn + Math.min(index, extraItems) + columnItems
-      );
-    });
-
-    return layout;
-  }, [options, columns]);
   
   return (
     <div className='MultiCheck'>
