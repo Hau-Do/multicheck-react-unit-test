@@ -2,11 +2,7 @@ import './MultiCheck.css';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {FC} from 'react';
-
-export type Option = {
-  label: string,
-  value: string
-}
+import { Option } from '../types';
 
 /**
  * Notice:

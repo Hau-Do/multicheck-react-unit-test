@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { MultiCheck, Option } from './MultiCheck';
+import { MultiCheck } from './MultiCheck';
+import { Option } from '../types';
 
 const testOptions: Option[] = [
   { label: 'Option 1', value: '1' },
