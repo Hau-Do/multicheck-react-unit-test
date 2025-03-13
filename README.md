@@ -1,50 +1,7 @@
-TypeScript React Multi-Check Testing Program
-============================================
+TypeScript React Multi-Check
+============================
 
-## Code Interview Process 
-
-Please follow the task requirements, the component style should be matched the screenshot.
-
-You have seven days to do it.
-
-- Create a new branch based on master instead of fork.
-- [Create the PR](../../pulls) when you finished.
-- Please communicate in English. Do not use Vietnamese in your Code, especially code and commits' comments.
-
-If you have any questions, please feel free to [raise the issue](../../issues) in the repo. We're glad to help you.
-
-Please let me know when your PR's ready for review.
-
-## Notice:
-
-This is a simplified component from real project.
-When you do it, consider it as a real task, and show your best programming practices.
-Your code will be reviewed and scored by the other developers of the team you will join.
-
-Your code will have higher score if:
-
-1. You split the task into smaller tasks, complete them one by one, and commit them in different git commits with proper commit messages 
-1. The code is clean and easy to read and understand
-2. The variable and function names are considered carefully
-3. Small and meaningful functions for complex logic
-4. No typo and has good code format
-5. Meaningful, carefully organized test cases covered most of the important functionality (very important)
-6. Provide proper/valuable comments, but only when it's necessary (in code and/or in github PR). Try improving the code to avoid un-necessary comments. 
-
-## Task
-
-Implement a react function component with typescript.
-
-1. typescript + react
-2. unit tests: use `jest` + `@testing-library/react`, etc. (**VERY important**)
-3. use **react hooks as much as possible** and use correctly for the functions or variables defined in compoennts since we want to know how you mastered it
-4. provide proper comments in code (and only when it's necessary) 
-5. show your best practise
-6. use github pull request to submit your code
-
-Find `TODO` in code to implement, you can also change any code in codebase to make it better.
-
-## Component Requirement:
+## Component:
 
 To implement a partial controlled "multiple check" component.
 
@@ -97,7 +54,6 @@ There is already a Controller component exists in repo, which is a demo helper t
 
 When you're developing the `MultiCheck` component, you can click on the buttons of 'Controller' to make sure it's working.
 
-**Don't modify the code of the 'Controller'**
 
 ### Performance requirement
 
@@ -115,10 +71,3 @@ npm run dev
 ```
 npm test
 ```
-
-Notice:
-1. Please use html native checkbox (`<input type="checkbox" />`) as the base,
-   the style doesn't need to be exactly the same
-2. No need to test `App.tsx` or `Controller.tsx`, only test MultiCheck and your created components and code
-4. Please follow the best Typescript style and best practices
-5. Some dependency versions may be old and you can upgrade them if you want
